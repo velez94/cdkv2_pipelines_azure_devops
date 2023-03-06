@@ -1,0 +1,14 @@
+ #CDK Pipelines Common steps
+ 
+steps:
+#Install node js
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'
+    displayName: 'Install Node.js'
+#Install cdk and chechov for sast
+- script: |
+    npm install -g aws-cdk
+    pip install checkov
+          
+  displayName: 'Install'

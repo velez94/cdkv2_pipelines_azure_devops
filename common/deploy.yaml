@@ -1,0 +1,41 @@
+#Deploy app
+parameters:
+- name: ServiceConnection
+  type: string
+  default: DevSecOpsServelessDeployment
+
+- name: RegionName
+  type: string
+  default: us-east-2
+
+- name: Project
+  type: string
+  default: DevSecOpsServelessDeployment
+
+- name: Environment
+  type: string
+  default: dev
+
+
+
+steps:
+- task: DownloadPipelineArtifact@2
+  inputs:
+    artifact:  ${{ parameters.Project }}
+    patterns: '**/*'
+    path: $(Build.SourcesDirectory)
+- script: |
+    ls -all
+    pwd
+- task: AWSShellScript@1
+  inputs:
+    awsCredentials: ${{ parameters.ServiceConnection }}
+    regionName: ${{ parameters.RegionName }}
+    scriptType: 'inline'
+    inlineScript: |
+      echo 'Deploying in ' $CDK_DEFAULT_ACCOUNT $CDK_DEFAULT_REGION
+      cdk deploy --require-approval never
+    displayName: 'CDK Deployement'
+  env:
+    CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
+    CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)

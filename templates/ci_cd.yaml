@@ -1,0 +1,62 @@
+# CDK Pipeline
+
+parameters:
+- name: Listlambdas
+  type: object
+  default:
+  - ReadMessage
+  - SaveReadMessage
+
+- name: ServiceConnection
+  type: string
+  default: DevSecOpsServelessDeployment
+
+- name: RegionName
+  type: string
+  default: us-east-2
+
+- name:  AppPath
+  type: string
+  default: lambdas
+
+- name: Project
+  type: string
+  default: DevSecOpsServelessDeployment
+
+- name: Environment
+  type: string
+  default: dev
+
+
+stages:
+  - stage: CI
+    displayName: CIStage
+    jobs:
+    - job: BuildApp
+      steps:
+      - template: ../common/install.yaml
+      - template: ../common/build.yaml
+        parameters:
+          Environment: ${{ parameters.Environment }}
+          RegionName: ${{ parameters.RegionName }}
+          ServiceConnection: ${{ parameters.ServiceConnection }}
+          Project: ${{ parameters.Project }}
+          AppPath: ${{ parameters.AppPath }}
+          ListLambdas: ${{ parameters.Listlambdas  }}
+
+         
+
+  - stage: Deploy
+    displayName: DeployStage${{ parameters.Environment }}
+    jobs:
+    - job: DeployApp
+      steps:
+      - checkout: none #skip checking out the default repository resource
+
+      - template: ../common/install.yaml
+      - template: ../common/deploy.yaml
+        parameters: 
+          Environment: ${{ parameters.Environment }}
+          RegionName: ${{ parameters.RegionName }}
+          ServiceConnection: ${{ parameters.ServiceConnection }}
+          Project: ${{ parameters.Project }}

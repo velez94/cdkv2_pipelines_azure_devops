@@ -1,0 +1,87 @@
+#Build steps
+# SAST for IaC
+
+parameters:
+- name: ServiceConnection
+  type: string
+  default: DevSecOpsServelessDeployment
+
+- name: RegionName
+  type: string
+  default: us-east-2
+
+- name: Project
+  type: string
+  default: DevSecOpsServelessDeployment
+
+- name: Environment
+  type: string
+  default: dev
+
+- name: Language
+  type: string
+  default: c#
+
+- name:  AppPath
+  type: string
+  default: lambdas
+
+- name: Listlambdas
+  type: object
+  default:
+  - ReadMessage
+  - SaveReadMessage
+
+
+steps:
+# dotnet
+- ${{ if eq(parameters.Language, 'c#') }}:
+  - script: |
+      echo  'Build for environment Account - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
+      dotnet build src
+    displayName: 'BuildDotnetProject'
+    env:
+      CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
+      CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
+    #Compile app for serveless projects
+  - ${{ each value in parameters.Listlambdas }}:
+    - script: | 
+        echo ${{ value }} 
+        dotnet build src/${{ parameters.AppPath }}/${{ value }}/src/${{ value }}/    
+      displayName: 'Build Lambdas'
+
+- script: |
+    cdk synth 
+    checkov -d cdk.out/ -o junitxml --output-file-path . -s #-s flag use soft mode
+  displayName: 'SASTIaC'
+      
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit' # 'JUnit' | 'NUnit' | 'VSTest' | 'XUnit' | 'CTest'. Alias: testRunner. Required. Test result format. Default: JUnit.
+    testResultsFiles: '**/results_junitxml.xml'
+    mergeTestResults: true
+    failTaskOnFailedTests: false
+    testRunTitle: 'SAST IaC Checkov scan'
+  condition: 'always()'   
+
+
+- task: AWSShellScript@1
+  inputs:
+    awsCredentials: ${{ parameters.ServiceConnection }}
+    regionName: ${{ parameters.RegionName }}
+    scriptType: 'inline'
+    inlineScript: |      
+     
+      echo  'Diff for environment Account - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
+      
+      cdk diff
+    displayName: 'CDK Diff'
+  env:
+    CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
+    CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
+# Publish Package
+- task: PublishPipelineArtifact@1
+  displayName: PublishArtifact
+  inputs:
+    targetPath: '$(Build.SourcesDirectory)'
+    artifactName: ${{ parameters.Project }}
