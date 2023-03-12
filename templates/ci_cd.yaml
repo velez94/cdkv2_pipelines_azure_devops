@@ -27,6 +27,14 @@ parameters:
   type: string
   default: dev
 
+- name: Language
+  type: string
+  default: python
+
+- name:  Action
+  type: string
+  default: deploy
+
 
 stages:
   - stage: CI
@@ -43,6 +51,7 @@ stages:
           Project: ${{ parameters.Project }}
           AppPath: ${{ parameters.AppPath }}
           ListLambdas: ${{ parameters.Listlambdas  }}
+          Language: python
 
          
 
@@ -60,3 +69,5 @@ stages:
           RegionName: ${{ parameters.RegionName }}
           ServiceConnection: ${{ parameters.ServiceConnection }}
           Project: ${{ parameters.Project }}
+          Action: ${{ parameters.Action }}
+          Language: ${{ parameters.Language }}

@@ -16,7 +16,13 @@ parameters:
   type: string
   default: dev
 
+- name: Language
+  type: string
+  default: python
 
+- name:  Action
+  type: string
+  default: deploy
 
 steps:
 - task: DownloadPipelineArtifact@2
@@ -27,15 +33,30 @@ steps:
 - script: |
     ls -all
     pwd
+- ${{ if eq(parameters.Language, 'python') }}:
+  - script: |
+      echo  'Build for environment Account Using Python - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
+      pip install -r requirements.txt
+    displayName: 'BuildPythonProject'
+    env:
+      CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
+      CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
+
 - task: AWSShellScript@1
   inputs:
     awsCredentials: ${{ parameters.ServiceConnection }}
     regionName: ${{ parameters.RegionName }}
     scriptType: 'inline'
     inlineScript: |
-      echo 'Deploying in ' $CDK_DEFAULT_ACCOUNT $CDK_DEFAULT_REGION
-      cdk deploy --require-approval never
-    displayName: 'CDK Deployement'
+      echo 'Run ${{ parameters.Action }} in ' $CDK_DEPLOY_ACCOUNT $CDK_DEPLOY_REGION
+      if [[ ${{ parameters.Action }} == destroy ]]; then
+            cdk ${{ parameters.Action }} --force
+      fi
+      if [[ ${{ parameters.Action }} == deploy ]]; then
+             cdk ${{ parameters.Action }} --require-approval never
+      fi
+     
+    displayName: 'CDK  ${{ parameters.Action }}'
   env:
     CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
     CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)

@@ -20,7 +20,7 @@ parameters:
 
 - name: Language
   type: string
-  default: c#
+  default: python
 
 - name:  AppPath
   type: string
@@ -49,6 +49,14 @@ steps:
         echo ${{ value }} 
         dotnet build src/${{ parameters.AppPath }}/${{ value }}/src/${{ value }}/    
       displayName: 'Build Lambdas'
+- ${{ if eq(parameters.Language, 'python') }}:
+  - script: |
+      echo  'Build for environment Account Using Python - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
+      pip install -r requirements.txt
+    displayName: 'BuildPythonProject'
+    env:
+      CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
+      CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
 
 - script: |
     cdk synth 
