@@ -27,7 +27,7 @@ az pipelines variable-group create --name cdk_pipelines_delivery --variables dev
 
 ```yaml
 
-# File: azure-pipelines.yml
+# File: azure-pipelines-c#.yml
 variables: 
 - group: 'ephemeral_envrionments_demo'
 

@@ -1,0 +1,25 @@
+ File: azure-pipelines-c#.yml
+variables:
+- group: 'ephemeral_envrionments_demo'
+
+
+resources:
+  repositories:
+    - repository: cdk_pipelines
+      type: git
+      name: DevSecOps/cdk_pipelines
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+
+stages:
+- template: templates/ci_cd.yaml@cdk_pipelines  # Template reference
+
+  parameters:
+    Project: ephemeral_env_core
+    Language: typescript
+    Action: deploy
+    ServiceConnection: EphemeralEnvDeployment
