@@ -42,6 +42,15 @@ steps:
       CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
       CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
 
+- ${{ if eq(parameters.Language, 'typescript') }}:
+  - script: |
+      echo  'Build for environment Account Using typescript - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
+      npm install
+    displayName: 'BuildTypescriptProject'
+    env:
+      CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
+      CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
+
 - task: AWSShellScript@1
   inputs:
     awsCredentials: ${{ parameters.ServiceConnection }}
