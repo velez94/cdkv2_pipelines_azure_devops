@@ -45,7 +45,7 @@ steps:
 - ${{ if eq(parameters.Language, 'typescript') }}:
   - script: |
       echo  'Build for environment Account Using typescript - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
-      npm install
+
     displayName: 'BuildTypescriptProject'
     env:
       CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
