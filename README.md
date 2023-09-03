@@ -53,3 +53,7 @@ stages:
     Action: deploy
     ServiceConnection: EphemeralEnvDeployment
 ```
+
+Learn how in: 
+- [Azure Devops and CDK- 1](https://dev.to/aws-builders/devsecops-with-aws-integrate-azure-devops-for-cdk-deployments-part-1-c4e) 
+- [Azure Devops and CDK- 2](https://dev.to/aws-builders/devsecops-with-aws-integrate-azure-devops-for-cdk-deployments-part-2-33i5) 
