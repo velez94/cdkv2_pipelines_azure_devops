@@ -51,7 +51,7 @@ stages:
           Project: ${{ parameters.Project }}
           AppPath: ${{ parameters.AppPath }}
           ListLambdas: ${{ parameters.Listlambdas  }}
-          Language: python
+          Language: ${{ parameters.Language  }}
 
          
 
