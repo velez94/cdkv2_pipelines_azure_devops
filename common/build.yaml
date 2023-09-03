@@ -49,6 +49,7 @@ steps:
         echo ${{ value }} 
         dotnet build src/${{ parameters.AppPath }}/${{ value }}/src/${{ value }}/    
       displayName: 'Build Lambdas'
+# python
 - ${{ if eq(parameters.Language, 'python') }}:
   - script: |
       echo  'Build for environment Account Using Python - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
@@ -57,7 +58,17 @@ steps:
     env:
       CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
       CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
-
+# typescript
+- ${{ if eq(parameters.Language, 'typescript') }}:
+  - script: |
+      echo  'Build for environment Account Using typescript - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
+      npm install
+      npm run build # compile ts to js
+      npm run test # perform jest unit tests
+    displayName: 'BuildTypescriptProject'
+    env:
+      CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
+      CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
 - script: |
     cdk synth 
     checkov -d cdk.out/ -o junitxml --output-file-path . -s #-s flag use soft mode
