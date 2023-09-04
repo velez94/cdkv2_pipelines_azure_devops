@@ -35,6 +35,14 @@ parameters:
   type: string
   default: deploy
 
+- name:  PrivateRepository
+  type: boolean
+  default: false
+
+- name:  AzureCustomFeed
+  type: string
+  default: a3dfeb18-d0fc-4033-99ae-50b8d724527b
+
 
 stages:
   - stage: CI
