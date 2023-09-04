@@ -70,11 +70,11 @@ steps:
 - ${{ if eq(parameters.Language, 'typescript') }}:
   - ${{ if eq(parameters.PrivateRepository, true) }}:
     - task: Npm@1
-        inputs:
-          command: 'install'
-          verbose: true
-          customRegistry: 'useFeed'
-          customFeed: ${{ parameters.AzureCustomFeed }}
+      inputs:
+        command: 'install'
+        verbose: true
+        customRegistry: 'useFeed'
+        customFeed: ${{ parameters.AzureCustomFeed }}
   - script: |
       echo  'Build for environment Account Using typescript - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
       npm install

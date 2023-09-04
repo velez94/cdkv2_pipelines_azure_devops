@@ -60,6 +60,8 @@ stages:
           AppPath: ${{ parameters.AppPath }}
           ListLambdas: ${{ parameters.Listlambdas  }}
           Language: ${{ parameters.Language  }}
+          PrivateRepository: ${{ parameters.PrivateRepository }}
+          AzureCustomFeed: ${{ parameters.AzureCustomFeed }}
 
          
 
