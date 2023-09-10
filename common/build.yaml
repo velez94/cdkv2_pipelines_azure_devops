@@ -133,4 +133,3 @@ steps:
   inputs:
     targetPath: '$(Build.SourcesDirectory)'
     artifactName: ${{ parameters.Project }}
-  workingDirectory: ${{ parameters.CDKPath }}
