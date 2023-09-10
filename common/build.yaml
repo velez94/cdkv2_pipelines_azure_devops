@@ -109,7 +109,7 @@ steps:
     failTaskOnFailedTests: false
     testRunTitle: 'SAST IaC Checkov scan'
   condition: 'always()'
-  workingDirectory: ${{ parameters.CDKPath }}
+
 
 
 - task: AWSShellScript@1
