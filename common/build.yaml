@@ -14,6 +14,11 @@ parameters:
   type: string
   default: DevSecOpsServelessDeployment
 
+- name: CDKPath
+  type: string
+  default: .
+
+
 - name: Environment
   type: string
   default: dev
@@ -48,6 +53,7 @@ steps:
       echo  'Build for environment Account - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
       dotnet build src
     displayName: 'BuildDotnetProject'
+    workingDirectory: ${{ parameters.CDKPath }}
     env:
       CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
       CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
@@ -63,6 +69,8 @@ steps:
       echo  'Build for environment Account Using Python - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
       pip install -r requirements.txt
     displayName: 'BuildPythonProject'
+    workingDirectory: ${{ parameters.CDKPath }}
+
     env:
       CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
       CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
@@ -75,12 +83,14 @@ steps:
         verbose: true
         customRegistry: 'useFeed'
         customFeed: ${{ parameters.AzureCustomFeed }}
+        workingDirectory: ${{ parameters.CDKPath }}
   - script: |
       echo  'Build for environment Account Using typescript - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
       npm install
       npm run build # compile ts to js
       npm run test # perform jest unit tests
     displayName: 'BuildTypescriptProject'
+    workingDirectory: ${{ parameters.CDKPath }}
     env:
       CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
       CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
@@ -89,6 +99,7 @@ steps:
     cdk synth 
     checkov -d cdk.out/ -o junitxml --output-file-path . -s #-s flag use soft mode
   displayName: 'SASTIaC'
+  workingDirectory: ${{ parameters.CDKPath }}
       
 - task: PublishTestResults@2
   inputs:
@@ -97,7 +108,8 @@ steps:
     mergeTestResults: true
     failTaskOnFailedTests: false
     testRunTitle: 'SAST IaC Checkov scan'
-  condition: 'always()'   
+  condition: 'always()'
+  workingDirectory: ${{ parameters.CDKPath }}
 
 
 - task: AWSShellScript@1
@@ -111,6 +123,7 @@ steps:
       
       cdk diff
     displayName: 'CDK Diff'
+    workingDirectory: ${{ parameters.CDKPath }}
   env:
     CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
     CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
@@ -120,3 +133,4 @@ steps:
   inputs:
     targetPath: '$(Build.SourcesDirectory)'
     artifactName: ${{ parameters.Project }}
+  workingDirectory: ${{ parameters.CDKPath }}

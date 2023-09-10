@@ -12,6 +12,10 @@ parameters:
   type: string
   default: DevSecOpsServelessDeployment
 
+- name: CDKPath
+  type: string
+  default: .
+
 - name: Environment
   type: string
   default: dev
@@ -38,6 +42,7 @@ steps:
       echo  'Build for environment Account Using Python - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
       pip install -r requirements.txt
     displayName: 'BuildPythonProject'
+    workingDirectory: ${{ parameters.CDKPath }}
     env:
       CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
       CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
@@ -48,6 +53,7 @@ steps:
       rm -rf node_modules && npm install
       npm run build
     displayName: 'BuildTypescriptProject'
+    workingDirectory: ${{ parameters.CDKPath }}
     env:
       CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
       CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
@@ -67,6 +73,7 @@ steps:
       fi
      
     displayName: 'CDK  ${{ parameters.Action }}'
+    workingDirectory: ${{ parameters.CDKPath }}
   env:
     CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
     CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
