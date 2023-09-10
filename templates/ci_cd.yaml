@@ -27,9 +27,17 @@ parameters:
   type: string
   default: dev
 
+- name: OnDemandTestEnv
+  type: boolean
+  default: false
+
 - name: Language
   type: string
   default: python
+
+- name: CDKPath
+  type: string
+  default: .
 
 - name:  Action
   type: string
@@ -62,11 +70,14 @@ stages:
           Language: ${{ parameters.Language  }}
           PrivateRepository: ${{ parameters.PrivateRepository }}
           AzureCustomFeed: ${{ parameters.AzureCustomFeed }}
+          CDKPath: ${{ parameters.CDKPath }}
 
          
 
   - stage: Deploy
     displayName: DeployStage${{ parameters.Environment }}
+    variables:
+      - template: common/set_env_vars_params.yml  # Template reference
     jobs:
     - job: DeployApp
       steps:
@@ -81,3 +92,5 @@ stages:
           Project: ${{ parameters.Project }}
           Action: ${{ parameters.Action }}
           Language: ${{ parameters.Language }}
+          CDKPath: ${{ parameters.CDKPath }}
+          OnDemandTestEnv: ${{ parameters.OnDemandTestEnv }}

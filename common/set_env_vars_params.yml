@@ -1,0 +1,8 @@
+parameters:
+- name: Version
+  type: string
+  default: "v0.0.0" # defaults for any parameters value "v0.0.0"
+
+variables:
+- name: VERSION
+  value: git tag | tail -1

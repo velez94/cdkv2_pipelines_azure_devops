@@ -20,6 +20,10 @@ parameters:
   type: string
   default: dev
 
+- name: OnDemandTestEnv
+  type: boolean
+  default: false
+
 - name: Language
   type: string
   default: python
@@ -46,6 +50,8 @@ steps:
     env:
       CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
       CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
+      ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
+      VERSION: $(VERSION)
 
 - ${{ if eq(parameters.Language, 'typescript') }}:
   - script: |
@@ -57,6 +63,8 @@ steps:
     env:
       CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
       CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
+      ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
+      VERSION: $(VERSION)
 
 - task: AWSShellScript@1
   inputs:
@@ -77,3 +85,5 @@ steps:
   env:
     CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
     CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
+    ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
+    VERSION: $(VERSION)
