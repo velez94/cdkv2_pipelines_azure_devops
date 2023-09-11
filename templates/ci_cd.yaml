@@ -92,5 +92,6 @@ stages:
           Project: ${{ parameters.Project }}
           Action: ${{ parameters.Action }}
           Language: ${{ parameters.Language }}
+          PrivateRepository: ${{ parameters.PrivateRepository }}
           CDKPath: ${{ parameters.CDKPath }}
           OnDemandTestEnv: ${{ parameters.OnDemandTestEnv }}

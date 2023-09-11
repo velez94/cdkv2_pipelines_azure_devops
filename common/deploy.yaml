@@ -24,6 +24,11 @@ parameters:
   type: boolean
   default: false
 
+
+- name:  PrivateRepository
+  type: boolean
+  default: false
+
 - name: Language
   type: string
   default: python
