@@ -108,6 +108,10 @@ steps:
     checkov -d cdk.out/ -o junitxml --output-file-path . -s #-s flag use soft mode
   displayName: 'SASTIaC'
   workingDirectory: ${{ parameters.CDKPath }}
+  env:
+    CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
+    CDK_DEPLOY_REGION: $(${{ parameters.Environment }}_region)
+    ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
       
 - task: PublishTestResults@2
   inputs:

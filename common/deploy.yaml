@@ -54,9 +54,17 @@ steps:
       VERSION: $(VERSION)
 
 - ${{ if eq(parameters.Language, 'typescript') }}:
+  - ${{ if eq(parameters.PrivateRepository, true) }}:
+      - task: Npm@1
+        inputs:
+          command: 'install'
+          workingDir: ${{ parameters.CDKPath }}
+          verbose: true
+          #customRegistry: 'useFeed'
+          #customFeed: ${{ parameters.AzureCustomFeed }}
   - script: |
       echo  'Build for environment Account Using typescript - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
-      rm -rf node_modules && npm install
+      # rm -rf node_modules && npm install
       npm run build
     displayName: 'BuildTypescriptProject'
     workingDirectory: ${{ parameters.CDKPath }}
@@ -81,6 +89,7 @@ steps:
       fi
      
     displayName: 'CDK  ${{ parameters.Action }}'
+    disableAutoCwd: true
     workingDirectory: ${{ parameters.CDKPath }}
   env:
     CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
