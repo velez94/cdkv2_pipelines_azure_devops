@@ -89,7 +89,7 @@ steps:
         verbose: true
         customRegistry: 'useFeed'
         customFeed: ${{ parameters.AzureCustomFeed }}
-        workingDirectory: ${{ parameters.CDKPath }}
+      workingDirectory: ${{ parameters.CDKPath }}
   - script: |
       echo  'Build for environment Account Using typescript - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
       npm install
