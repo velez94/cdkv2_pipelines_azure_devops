@@ -128,7 +128,7 @@ steps:
     inlineScript: |      
      
       echo  'Diff for environment Account - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
-      
+      pwd
       cdk diff
     displayName: 'CDK Diff'
     workingDirectory: ${{ parameters.CDKPath }}
