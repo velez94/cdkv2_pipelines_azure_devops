@@ -131,7 +131,9 @@ steps:
       pwd
       cdk diff
     displayName: 'CDK Diff'
+    disableAutoCwd: true
     workingDirectory: ${{ parameters.CDKPath }}
+
   env:
     CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
     CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
