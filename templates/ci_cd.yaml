@@ -77,7 +77,7 @@ stages:
   - stage: Deploy
     displayName: DeployStage${{ parameters.Environment }}
     variables:
-      - template: common/set_env_vars_params.yml  # Template reference
+      - template: ../common/set_env_vars_params.yml  # Template reference
     jobs:
     - job: DeployApp
       steps:
