@@ -94,7 +94,7 @@ steps:
             cdk ${{ parameters.Action }} -v --force --require-approval never
       fi
       if [[ ${{ parameters.Action }} == deploy ]]; then
-             cdk ${{ parameters.Action }} -v --require-approval never
+             cdk ${{ parameters.Action }} --app cdk.out -v --require-approval never
       fi
      
     displayName: 'CDK  ${{ parameters.Action }}'
