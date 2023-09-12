@@ -62,7 +62,7 @@ steps:
       ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
       VERSION: $(VERSION)
 
-- ${{ if eq(parameters.Language, 'typescript') }}:
+#- ${{ if eq(parameters.Language, 'typescript') }}:
   #- ${{ if eq(parameters.PrivateRepository, true) }}:
    #   - script: |
     #        echo  'Clean up sources'
