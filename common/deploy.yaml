@@ -89,11 +89,12 @@ steps:
     scriptType: 'inline'
     inlineScript: |
       echo 'Run ${{ parameters.Action }} in ' $CDK_DEPLOY_ACCOUNT $CDK_DEPLOY_REGION
+      chmod -x  -R .
       if [[ ${{ parameters.Action }} == destroy ]]; then
-            cdk ${{ parameters.Action }} --force
+            cdk ${{ parameters.Action }} -v --force --require-approval never
       fi
       if [[ ${{ parameters.Action }} == deploy ]]; then
-             cdk ${{ parameters.Action }} --require-approval never
+             cdk ${{ parameters.Action }} -v --require-approval never
       fi
      
     displayName: 'CDK  ${{ parameters.Action }}'
