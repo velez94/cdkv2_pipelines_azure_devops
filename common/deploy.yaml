@@ -102,11 +102,10 @@ steps:
           echo "ECS Deployment ..."
           cat ../version.txt
           export VERSION=`cat ../version.txt`
-          
           echo $VERSION
       fi
       if [[ ${{ parameters.Action }} == destroy ]]; then
-            cdk ${{ parameters.Action }}  --force --require-approval never
+            cdk ${{ parameters.Action }} --app cdk.out --force --require-approval never
       fi
       if [[ ${{ parameters.Action }} == deploy ]]; then
              cdk ${{ parameters.Action }} --app cdk.out  --require-approval never
