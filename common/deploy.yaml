@@ -89,7 +89,7 @@ steps:
     scriptType: 'inline'
     inlineScript: |
       echo 'Run ${{ parameters.Action }} in ' $CDK_DEPLOY_ACCOUNT $CDK_DEPLOY_REGION
-      chmod -x  -R .
+      chmod +x -R .
       if [[ ${{ parameters.Action }} == destroy ]]; then
             cdk ${{ parameters.Action }} -v --force --require-approval never
       fi
