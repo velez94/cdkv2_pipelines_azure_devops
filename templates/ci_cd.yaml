@@ -60,6 +60,9 @@ parameters:
   type: string
   default: yes
 
+- name:  ECSDeployment
+  type: string
+  default: no
 
 stages:
   - stage: CI
@@ -106,4 +109,4 @@ stages:
           PrivateRepository: ${{ parameters.PrivateRepository }}
           CDKPath: ${{ parameters.CDKPath }}
           OnDemandTestEnv: ${{ parameters.OnDemandTestEnv }}
-          Version: ${{ parameters.Version }}
+          ECSDeployment: ${{ parameters.ECSDeployment }}

@@ -41,6 +41,10 @@ parameters:
   type: string
   default: v0.0.0
 
+- name:  ECSDeployment
+  type: string
+  default: no
+
 steps:
 - task: DownloadPipelineArtifact@2
   inputs:
@@ -93,7 +97,14 @@ steps:
     scriptType: 'inline'
     inlineScript: |
       echo 'Run ${{ parameters.Action }} in ' $CDK_DEPLOY_ACCOUNT $CDK_DEPLOY_REGION
-      echo $(VERSION)
+      
+      if [[ ${{ parameters.ECSDeployment }} == yes ]]; then
+          echo "ECS Deployment ..."
+          cat cat ../version.txt
+          export VERSION=`cat ../version.txt`
+          
+          echo $VERSION
+      fi
       if [[ ${{ parameters.Action }} == destroy ]]; then
             cdk ${{ parameters.Action }}  --force --require-approval never
       fi
