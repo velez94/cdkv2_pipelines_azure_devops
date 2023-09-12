@@ -100,7 +100,7 @@ steps:
       
       if [[ ${{ parameters.ECSDeployment }} == yes ]]; then
           echo "ECS Deployment ..."
-          cat cat ../version.txt
+          cat ../version.txt
           export VERSION=`cat ../version.txt`
           
           echo $VERSION
