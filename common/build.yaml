@@ -58,7 +58,7 @@ steps:
     - checkout: none #skip checking out the default repository resource
     - task: DownloadPipelineArtifact@2
       inputs:
-        artifact: ${{ parameters.Project }}
+        artifact: '${{ parameters.Project }}-Build'
         patterns: '**/*'
         path: $(Build.SourcesDirectory)
     - script: |
