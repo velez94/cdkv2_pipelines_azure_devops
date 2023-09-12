@@ -60,6 +60,9 @@ steps:
 
 - ${{ if eq(parameters.Language, 'typescript') }}:
   - ${{ if eq(parameters.PrivateRepository, true) }}:
+      - script: |
+            echo  'Clean up sources' 
+            rm -rf node_modules
       - task: Npm@1
         inputs:
           command: 'install'
