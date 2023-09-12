@@ -82,7 +82,8 @@ stages:
 
   - stage: Deploy
     displayName: DeployStage${{ parameters.Environment }}
-
+    variables:
+      VERSION: ${{ parameters.Version }}
     jobs:
     - job: DeployApp
       steps:
