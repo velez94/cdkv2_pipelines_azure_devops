@@ -64,7 +64,7 @@ steps:
       CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
       CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
       ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
-      VERSION: $(VERSION)
+
 
 #- ${{ if eq(parameters.Language, 'typescript') }}:
   #- ${{ if eq(parameters.PrivateRepository, true) }}:
@@ -119,4 +119,3 @@ steps:
     CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
     CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
     ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
-    VERSION: ${{ parameters.Version }}
