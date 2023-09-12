@@ -37,8 +37,9 @@ parameters:
   type: string
   default: deploy
 
-variables:
-  - template: ../common/set_env_vars_params.yml  # Template reference
+- name:  Version
+  type: string
+  default: v0.0.0
 
 steps:
 - task: DownloadPipelineArtifact@2
@@ -93,7 +94,7 @@ steps:
     scriptType: 'inline'
     inlineScript: |
       echo 'Run ${{ parameters.Action }} in ' $CDK_DEPLOY_ACCOUNT $CDK_DEPLOY_REGION
-      chmod +x -R .
+      echo $(VERSION)
       if [[ ${{ parameters.Action }} == destroy ]]; then
             cdk ${{ parameters.Action }} -v --force --require-approval never
       fi
@@ -108,4 +109,4 @@ steps:
     CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
     CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
     ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
-    VERSION: $(VERSION)
+    VERSION: ${{ parameters.Version }}

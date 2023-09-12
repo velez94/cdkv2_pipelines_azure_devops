@@ -43,9 +43,14 @@ parameters:
   type: string
   default: deploy
 
+- name:  Version
+  type: string
+  default: v0.0.0
+
 - name:  PrivateRepository
   type: boolean
   default: false
+
 
 - name:  AzureCustomFeed
   type: string
@@ -54,6 +59,8 @@ parameters:
 
 stages:
   - stage: CI
+    variables:
+      - template: ../common/set_env_vars_params.yml  # Template reference
     displayName: CIStage
     jobs:
     - job: BuildApp
@@ -72,12 +79,10 @@ stages:
           AzureCustomFeed: ${{ parameters.AzureCustomFeed }}
           CDKPath: ${{ parameters.CDKPath }}
 
-         
 
   - stage: Deploy
     displayName: DeployStage${{ parameters.Environment }}
-    variables:
-      - template: ../common/set_env_vars_params.yml  # Template reference
+
     jobs:
     - job: DeployApp
       steps:
@@ -95,3 +100,4 @@ stages:
           PrivateRepository: ${{ parameters.PrivateRepository }}
           CDKPath: ${{ parameters.CDKPath }}
           OnDemandTestEnv: ${{ parameters.OnDemandTestEnv }}
+          Version: ${{ parameters.Version }}

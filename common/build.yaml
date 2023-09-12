@@ -49,8 +49,6 @@ parameters:
   - ReadMessage
   - SaveReadMessage
 
-variables:
-  - template: ../common/set_env_vars_params.yml  # Template reference
 steps:
 # dotnet
 - ${{ if eq(parameters.Language, 'c#') }}:
