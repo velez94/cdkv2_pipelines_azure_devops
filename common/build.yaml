@@ -35,6 +35,10 @@ parameters:
   type: string
   default: lambdas
 
+- name:  Checkout
+  type: string
+  default: yes
+
 - name:  PrivateRepository
   type: boolean
   default: false
@@ -50,6 +54,16 @@ parameters:
   - SaveReadMessage
 
 steps:
+- ${{ if eq(parameters.Checkout, 'none') }}:
+    - checkout: none #skip checking out the default repository resource
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifact: ${{ parameters.Project }}
+        patterns: '**/*'
+        path: $(Build.SourcesDirectory)
+    - script: |
+        ls -all
+        pwd
 # dotnet
 - ${{ if eq(parameters.Language, 'c#') }}:
   - script: |

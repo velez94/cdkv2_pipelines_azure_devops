@@ -56,6 +56,10 @@ parameters:
   type: string
   default: a3dfeb18-d0fc-4033-99ae-50b8d724527b
 
+- name:  Checkout
+  type: string
+  default: yes
+
 
 stages:
   - stage: CI
@@ -78,6 +82,7 @@ stages:
           PrivateRepository: ${{ parameters.PrivateRepository }}
           AzureCustomFeed: ${{ parameters.AzureCustomFeed }}
           CDKPath: ${{ parameters.CDKPath }}
+          Checkout: ${{ parameters.Checkout }}
 
 
   - stage: Deploy

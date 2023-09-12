@@ -87,7 +87,6 @@ steps:
    #   VERSION: $(VERSION)
 
 - task: AWSShellScript@1
-
   inputs:
     awsCredentials: ${{ parameters.ServiceConnection }}
     regionName: ${{ parameters.RegionName }}
@@ -96,10 +95,10 @@ steps:
       echo 'Run ${{ parameters.Action }} in ' $CDK_DEPLOY_ACCOUNT $CDK_DEPLOY_REGION
       echo $(VERSION)
       if [[ ${{ parameters.Action }} == destroy ]]; then
-            cdk ${{ parameters.Action }} -v --force --require-approval never
+            cdk ${{ parameters.Action }}  --force --require-approval never
       fi
       if [[ ${{ parameters.Action }} == deploy ]]; then
-             cdk ${{ parameters.Action }} --app cdk.out -v --require-approval never
+             cdk ${{ parameters.Action }} --app cdk.out  --require-approval never
       fi
      
     displayName: 'CDK  ${{ parameters.Action }}'
