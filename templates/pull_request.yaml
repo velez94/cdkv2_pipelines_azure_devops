@@ -68,7 +68,28 @@ parameters:
 #- stage: ValidatePR
 #  condition: |
 #    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
+
 jobs:
+
+- job: DeployEphemeralEnvironment
+  condition: |
+    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
+  displayName: Destroy ephemeral resources
+  steps:
+    - template: ../common/install.yaml
+    - template: ../common/deploy.yaml
+      parameters:
+        Environment: test #${{ parameters.Environment }}
+        RegionName: ${{ parameters.RegionName }}
+        ServiceConnection: ${{ parameters.ServiceConnection }}
+        Project: ${{ parameters.Project }}
+        Action: deploy #${{ parameters.Action }}
+        Language: ${{ parameters.Language }}
+        PrivateRepository: ${{ parameters.PrivateRepository }}
+        CDKPath: ${{ parameters.CDKPath }}
+        OnDemandTestEnv: ${{ parameters.OnDemandTestEnv }}
+        ECSDeployment: ${{ parameters.ECSDeployment }}
+
 - job: waitForValidation
   condition: |
     and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
@@ -89,7 +110,7 @@ jobs:
   - template: ../common/install.yaml
   - template: ../common/deploy.yaml
     parameters:
-      Environment: ${{ parameters.Environment }}
+      Environment: test #${{ parameters.Environment }}
       RegionName: ${{ parameters.RegionName }}
       ServiceConnection: ${{ parameters.ServiceConnection }}
       Project: ${{ parameters.Project }}
