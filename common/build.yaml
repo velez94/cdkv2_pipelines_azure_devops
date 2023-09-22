@@ -120,14 +120,27 @@ steps:
       CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
       ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
 
-- script: |
-    if [[ ${{ parameters.ECSDeployment }} == yes ]]; then
+- task: AWSShellScript@1
+  inputs:
+    awsCredentials: ${{ parameters.ServiceConnection }}
+    regionName: ${{ parameters.RegionName }}
+    scriptType: 'inline'
+    inlineScript: |      
+     
+      echo  'Synth for environment Account - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
+      if [[ ${{ parameters.ECSDeployment }} == yes ]]; then
           echo "ECS Deployment ..."
           cat ../version.txt
           export VERSION=`cat ../version.txt`
           echo $VERSION
       fi
-    cdk synth 
+      cdk synth
+    displayName: 'CDK Synth'
+    disableAutoCwd: true
+    workingDirectory: ${{ parameters.CDKPath }}
+
+- script: |
+    
     checkov -d cdk.out/ -o junitxml --output-file-path . -s #-s flag use soft mode
   displayName: 'SASTIaC'
   workingDirectory: ${{ parameters.CDKPath }}
