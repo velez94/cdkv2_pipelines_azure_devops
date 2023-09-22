@@ -88,7 +88,6 @@ stages:
           Checkout: ${{ parameters.Checkout }}
 
     - template: ./pull_request.yaml
-      dependsOn: BuildApp
       parameters:
         Environment: ${{ parameters.Environment }}
         RegionName: ${{ parameters.RegionName }}
