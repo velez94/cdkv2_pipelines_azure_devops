@@ -68,7 +68,7 @@ parameters:
 #- stage: ValidatePR
 #  condition: |
 #    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
-#  jobs:
+jobs:
 - job: waitForValidation
   condition: |
     and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
