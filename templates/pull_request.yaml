@@ -1,0 +1,101 @@
+# CDK Pipeline
+
+parameters:
+- name: Listlambdas
+  type: object
+  default:
+  - ReadMessage
+  - SaveReadMessage
+
+- name: ServiceConnection
+  type: string
+  default: DevSecOpsServelessDeployment
+
+- name: RegionName
+  type: string
+  default: us-east-2
+
+- name:  AppPath
+  type: string
+  default: lambdas
+
+- name: Project
+  type: string
+  default: DevSecOpsServelessDeployment
+
+- name: Environment
+  type: string
+  default: dev
+
+- name: OnDemandTestEnv
+  type: boolean
+  default: false
+
+- name: Language
+  type: string
+  default: python
+
+- name: CDKPath
+  type: string
+  default: .
+
+- name:  Action
+  type: string
+  default: deploy
+
+- name:  Version
+  type: string
+  default: v0.0.0
+
+- name:  PrivateRepository
+  type: boolean
+  default: false
+
+
+- name:  AzureCustomFeed
+  type: string
+  default: a3dfeb18-d0fc-4033-99ae-50b8d724527b
+
+- name:  Checkout
+  type: string
+  default: yes
+
+- name:  ECSDeployment
+  type: string
+  default: no
+
+stages:
+  - stage: Certification
+    condition: |
+     and( eq(variables['Build.Reason'], 'PullRequest'))
+    jobs:
+      steps:
+       - task: ManualValidation@0
+         inputs:
+           notifyUsers: 'alejandro.velez@somosmakers.co'
+           instructions: 'Validate if qa pass'
+
+  - stage: Destroy
+    displayName: DeployStage${{ parameters.Environment }}
+    condition: |
+      and( eq(variables['Build.Reason'], 'PullRequest'), ${{ parameters.OnDemandTestEnv }} )
+    variables:
+      VERSION: ${{ parameters.Version }}
+    jobs:
+      - job: DeployApp
+        steps:
+          - checkout: none #skip checking out the default repository resource
+
+          - template: ../common/install.yaml
+          - template: ../common/deploy.yaml
+            parameters:
+              Environment: ${{ parameters.Environment }}
+              RegionName: ${{ parameters.RegionName }}
+              ServiceConnection: ${{ parameters.ServiceConnection }}
+              Project: ${{ parameters.Project }}
+              Action: destroy #${{ parameters.Action }}
+              Language: ${{ parameters.Language }}
+              PrivateRepository: ${{ parameters.PrivateRepository }}
+              CDKPath: ${{ parameters.CDKPath }}
+              OnDemandTestEnv: ${{ parameters.OnDemandTestEnv }}
+              ECSDeployment: ${{ parameters.ECSDeployment }}

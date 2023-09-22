@@ -88,6 +88,13 @@ stages:
           Checkout: ${{ parameters.Checkout }}
 
 
+  - stage: ValidatePR
+    condition: ${{ parameters.OnDemandTestEnv }}
+    jobs:
+    - job: ValidatePR
+      steps:
+        - template: ./pull_request.yaml
+
   - stage: Deploy
     displayName: DeployStage${{ parameters.Environment }}
     variables:
