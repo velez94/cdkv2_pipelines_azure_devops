@@ -64,13 +64,16 @@ parameters:
   type: string
   default: no
 
+jobs:
+  job: manual_approval
+  pool: server
+  steps:
+  - task: ManualValidation@0
+    inputs:
+     notifyUsers: 'alejandro.velez@somosmakers.co'
+     instructions: 'Validate if qa pass'
 
 steps:
-- task: ManualValidation@0
-  inputs:
-   notifyUsers: 'alejandro.velez@somosmakers.co'
-   instructions: 'Validate if qa pass'
-
 - template: ../common/install.yaml
 - template: ../common/deploy.yaml
   parameters:
