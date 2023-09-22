@@ -87,18 +87,19 @@ stages:
           CDKPath: ${{ parameters.CDKPath }}
           Checkout: ${{ parameters.Checkout }}
 
-  - template: ./pull_request.yaml
-    parameters:
-      Environment: ${{ parameters.Environment }}
-      RegionName: ${{ parameters.RegionName }}
-      ServiceConnection: ${{ parameters.ServiceConnection }}
-      Project: ${{ parameters.Project }}
-      Action: ${{ parameters.Action }}
-      Language: ${{ parameters.Language }}
-      PrivateRepository: ${{ parameters.PrivateRepository }}
-      CDKPath: ${{ parameters.CDKPath }}
-      OnDemandTestEnv: ${{ parameters.OnDemandTestEnv }}
-      ECSDeployment: ${{ parameters.ECSDeployment }}
+  - ${{ if parameters.OnDemandTestEnv }}
+    - template: ./pull_request.yaml
+      parameters:
+        Environment: ${{ parameters.Environment }}
+        RegionName: ${{ parameters.RegionName }}
+        ServiceConnection: ${{ parameters.ServiceConnection }}
+        Project: ${{ parameters.Project }}
+        Action: ${{ parameters.Action }}
+        Language: ${{ parameters.Language }}
+        PrivateRepository: ${{ parameters.PrivateRepository }}
+        CDKPath: ${{ parameters.CDKPath }}
+        OnDemandTestEnv: ${{ parameters.OnDemandTestEnv }}
+        ECSDeployment: ${{ parameters.ECSDeployment }}
 
   - stage: Deploy
     displayName: DeployStage${{ parameters.Environment }}
@@ -108,7 +109,6 @@ stages:
     - job: DeployApp
       steps:
       - checkout: none #skip checking out the default repository resource
-
       - template: ../common/install.yaml
       - template: ../common/deploy.yaml
         parameters: 
