@@ -86,6 +86,7 @@ stages:
           AzureCustomFeed: ${{ parameters.AzureCustomFeed }}
           CDKPath: ${{ parameters.CDKPath }}
           Checkout: ${{ parameters.Checkout }}
+          ECSDeployment: ${{ parameters.ECSDeployment }}
 
     - template: ./pull_request.yaml
       parameters:

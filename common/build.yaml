@@ -52,6 +52,10 @@ parameters:
   default:
   - ReadMessage
   - SaveReadMessage
+  -
+- name:  ECSDeployment
+  type: string
+  default: no
 
 steps:
 - ${{ if eq(parameters.Checkout, 'none') }}:
@@ -117,6 +121,12 @@ steps:
       ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
 
 - script: |
+    if [[ ${{ parameters.ECSDeployment }} == yes ]]; then
+          echo "ECS Deployment ..."
+          cat ../version.txt
+          export VERSION=`cat ../version.txt`
+          echo $VERSION
+      fi
     cdk synth 
     checkov -d cdk.out/ -o junitxml --output-file-path . -s #-s flag use soft mode
   displayName: 'SASTIaC'
