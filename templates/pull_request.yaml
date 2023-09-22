@@ -66,7 +66,8 @@ parameters:
 
 stages:
 - stage: ValidatePR
-  condition: ${{ parameters.OnDemandTestEnv }}
+  condition: | 
+    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
   jobs:
   - job: waitForValidation
     displayName: Wait for external validation
@@ -79,6 +80,8 @@ stages:
 
   #steps:
   - job: UndeployEphemeralEnvironment
+    condition: |
+      and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
     displayName: Destroy ephemeral resources
     steps:
     - template: ../common/install.yaml
