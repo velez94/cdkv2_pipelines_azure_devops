@@ -138,10 +138,10 @@ steps:
     displayName: 'CDK Synth'
     disableAutoCwd: true
     workingDirectory: ${{ parameters.CDKPath }}
-    env:
-      CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
-      CDK_DEPLOY_REGION: $(${{ parameters.Environment }}_region)
-      ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
+  env:
+    CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
+    CDK_DEPLOY_REGION: $(${{ parameters.Environment }}_region)
+    ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
 
 - script: |
     
