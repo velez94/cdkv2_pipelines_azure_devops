@@ -163,7 +163,6 @@ steps:
   condition: 'always()'
 
 
-
 - task: AWSShellScript@1
   inputs:
     awsCredentials: ${{ parameters.ServiceConnection }}
@@ -173,6 +172,12 @@ steps:
      
       echo  'Diff for environment Account - ' $(${{ parameters.Environment }}_account) 'Region-' $(${{ parameters.Environment }}_region)
       pwd
+      if [[ ${{ parameters.ECSDeployment }} == yes ]]; then
+          echo "ECS Deployment ..."
+          cat ../version.txt
+          export VERSION=`cat ../version.txt`
+          echo $VERSION
+      fi
       cdk diff
     displayName: 'CDK Diff'
     disableAutoCwd: true
