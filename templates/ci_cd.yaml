@@ -70,7 +70,7 @@ stages:
       - template: ../common/set_env_vars_params.yml  # Template reference
     displayName: CIStage
     jobs:
-    - job: BuildApp
+    - job: BuildCDKApp
       steps:
       - template: ../common/install.yaml
       - template: ../common/build.yaml
