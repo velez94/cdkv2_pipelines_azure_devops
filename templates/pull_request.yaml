@@ -74,7 +74,7 @@ jobs:
 - job: DeployEphemeralEnvironment
   dependsOn: BuildCDKApp
   condition: |
-    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
+    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest'), in(dependencies.BuildCDKApp.result, 'Succeeded')  )
   displayName: Deploy ephemeral resources
   steps:
     - template: ../common/install.yaml
@@ -94,7 +94,7 @@ jobs:
 - job: waitForValidation
   dependsOn: DeployEphemeralEnvironment
   condition: |
-    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
+    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest'), in(dependencies.DeployEphemeralEnvironment.result, 'Succeeded')  )
   displayName: Wait for external validation
   pool: server
   steps:
@@ -107,7 +107,7 @@ jobs:
 - job: UndeployEphemeralEnvironment
   dependsOn: waitForValidation
   condition: |
-    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
+    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest'), in(dependencies.DeployEphemeralEnvironment.result, 'Succeeded')   )
   displayName: Destroy ephemeral resources
   steps:
   - template: ../common/install.yaml
