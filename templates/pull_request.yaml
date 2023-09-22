@@ -74,7 +74,7 @@ jobs:
 - job: DeployEphemeralEnvironment
   condition: |
     and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
-  displayName: Destroy ephemeral resources
+  displayName: Deploy ephemeral resources
   steps:
     - template: ../common/install.yaml
     - template: ../common/deploy.yaml
@@ -91,6 +91,7 @@ jobs:
         ECSDeployment: ${{ parameters.ECSDeployment }}
 
 - job: waitForValidation
+  dependsOn: DeployEphemeralEnvironment
   condition: |
     and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
   displayName: Wait for external validation
@@ -103,6 +104,7 @@ jobs:
 
 #steps:
 - job: UndeployEphemeralEnvironment
+  dependsOn: waitForValidation
   condition: |
     and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
   displayName: Destroy ephemeral resources
