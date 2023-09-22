@@ -68,34 +68,34 @@ parameters:
 #- stage: ValidatePR
 #  condition: |
 #    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
-  jobs:
-  - job: waitForValidation
-    condition: |
-      and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
-    displayName: Wait for external validation
-    pool: server
-    steps:
-    - task: ManualValidation@0
-      inputs:
-       notifyUsers: 'alejandro.velez@somosmakers.co'
-       instructions: 'Validate if qa pass'
+#  jobs:
+- job: waitForValidation
+  condition: |
+    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
+  displayName: Wait for external validation
+  pool: server
+  steps:
+  - task: ManualValidation@0
+    inputs:
+     notifyUsers: 'alejandro.velez@somosmakers.co'
+     instructions: 'Validate if qa pass'
 
-  #steps:
-  - job: UndeployEphemeralEnvironment
-    condition: |
-      and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
-    displayName: Destroy ephemeral resources
-    steps:
-    - template: ../common/install.yaml
-    - template: ../common/deploy.yaml
-      parameters:
-        Environment: ${{ parameters.Environment }}
-        RegionName: ${{ parameters.RegionName }}
-        ServiceConnection: ${{ parameters.ServiceConnection }}
-        Project: ${{ parameters.Project }}
-        Action: destroy #${{ parameters.Action }}
-        Language: ${{ parameters.Language }}
-        PrivateRepository: ${{ parameters.PrivateRepository }}
-        CDKPath: ${{ parameters.CDKPath }}
-        OnDemandTestEnv: ${{ parameters.OnDemandTestEnv }}
-        ECSDeployment: ${{ parameters.ECSDeployment }}
+#steps:
+- job: UndeployEphemeralEnvironment
+  condition: |
+    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
+  displayName: Destroy ephemeral resources
+  steps:
+  - template: ../common/install.yaml
+  - template: ../common/deploy.yaml
+    parameters:
+      Environment: ${{ parameters.Environment }}
+      RegionName: ${{ parameters.RegionName }}
+      ServiceConnection: ${{ parameters.ServiceConnection }}
+      Project: ${{ parameters.Project }}
+      Action: destroy #${{ parameters.Action }}
+      Language: ${{ parameters.Language }}
+      PrivateRepository: ${{ parameters.PrivateRepository }}
+      CDKPath: ${{ parameters.CDKPath }}
+      OnDemandTestEnv: ${{ parameters.OnDemandTestEnv }}
+      ECSDeployment: ${{ parameters.ECSDeployment }}
