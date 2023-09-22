@@ -69,7 +69,8 @@ stages:
   condition: ${{ parameters.OnDemandTestEnv }}
   jobs:
     - job: manual_approval
-      pool: server
+      pool:
+        vmImage: ubuntu-latest
       steps:
       - task: ManualValidation@0
         inputs:
