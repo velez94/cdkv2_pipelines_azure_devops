@@ -64,12 +64,14 @@ parameters:
   type: string
   default: no
 
-stages:
-- stage: ValidatePR
-  condition: | 
-    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
+#stages:
+#- stage: ValidatePR
+#  condition: |
+#    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
   jobs:
   - job: waitForValidation
+    condition: |
+      and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')  )
     displayName: Wait for external validation
     pool: server
     steps:
