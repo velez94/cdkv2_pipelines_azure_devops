@@ -87,10 +87,7 @@ stages:
           CDKPath: ${{ parameters.CDKPath }}
           Checkout: ${{ parameters.Checkout }}
 
-
-  - stage: ValidatePR
-    condition: ${{ parameters.OnDemandTestEnv }}
-    template: ./pull_request.yaml
+  - template: ./pull_request.yaml
 
   - stage: Deploy
     displayName: DeployStage${{ parameters.Environment }}
