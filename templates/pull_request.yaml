@@ -64,38 +64,23 @@ parameters:
   type: string
   default: no
 
-stages:
-  - stage: Certification
-    condition: |
-     and( eq(variables['Build.Reason'], 'PullRequest'))
-    jobs:
-      steps:
-       - task: ManualValidation@0
-         inputs:
-           notifyUsers: 'alejandro.velez@somosmakers.co'
-           instructions: 'Validate if qa pass'
 
-  - stage: Destroy
-    displayName: DeployStage${{ parameters.Environment }}
-    condition: |
-      and( eq(variables['Build.Reason'], 'PullRequest'), ${{ parameters.OnDemandTestEnv }} )
-    variables:
-      VERSION: ${{ parameters.Version }}
-    jobs:
-      - job: DeployApp
-        steps:
-          - checkout: none #skip checking out the default repository resource
+steps:
+- task: ManualValidation@0
+  inputs:
+   notifyUsers: 'alejandro.velez@somosmakers.co'
+   instructions: 'Validate if qa pass'
 
-          - template: ../common/install.yaml
-          - template: ../common/deploy.yaml
-            parameters:
-              Environment: ${{ parameters.Environment }}
-              RegionName: ${{ parameters.RegionName }}
-              ServiceConnection: ${{ parameters.ServiceConnection }}
-              Project: ${{ parameters.Project }}
-              Action: destroy #${{ parameters.Action }}
-              Language: ${{ parameters.Language }}
-              PrivateRepository: ${{ parameters.PrivateRepository }}
-              CDKPath: ${{ parameters.CDKPath }}
-              OnDemandTestEnv: ${{ parameters.OnDemandTestEnv }}
-              ECSDeployment: ${{ parameters.ECSDeployment }}
+- template: ../common/install.yaml
+- template: ../common/deploy.yaml
+  parameters:
+    Environment: ${{ parameters.Environment }}
+    RegionName: ${{ parameters.RegionName }}
+    ServiceConnection: ${{ parameters.ServiceConnection }}
+    Project: ${{ parameters.Project }}
+    Action: destroy #${{ parameters.Action }}
+    Language: ${{ parameters.Language }}
+    PrivateRepository: ${{ parameters.PrivateRepository }}
+    CDKPath: ${{ parameters.CDKPath }}
+    OnDemandTestEnv: ${{ parameters.OnDemandTestEnv }}
+    ECSDeployment: ${{ parameters.ECSDeployment }}
