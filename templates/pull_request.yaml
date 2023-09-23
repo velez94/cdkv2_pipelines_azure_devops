@@ -103,11 +103,11 @@ jobs:
      notifyUsers: 'alejandro.velez@somosmakers.co'
      instructions: 'Validate if qa pass'
 
-#steps:
+#steps:run even manual approval is rejected in(dependencies.DeployEphemeralEnvironment.result, 'Succeeded')
 - job: UndeployEphemeralEnvironment
   dependsOn: waitForValidation
   condition: |
-    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest'), in(dependencies.DeployEphemeralEnvironment.result, 'Succeeded')   )
+    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest'),    )
   displayName: Destroy ephemeral resources
   steps:
   - template: ../common/install.yaml
