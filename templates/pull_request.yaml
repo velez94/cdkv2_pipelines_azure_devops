@@ -107,7 +107,7 @@ jobs:
 - job: UndeployEphemeralEnvironment
   dependsOn: waitForValidation
   condition: |
-    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest'),    )
+    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest')   )
   displayName: Destroy ephemeral resources
   steps:
   - template: ../common/install.yaml
