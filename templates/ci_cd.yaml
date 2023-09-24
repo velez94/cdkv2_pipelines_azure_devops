@@ -103,6 +103,8 @@ stages:
 
   - stage: Deploy
     displayName: DeployStage${{ parameters.Environment }}
+    condition: |
+      and (  ne(variables['Build.Reason'], 'PullRequest')  )
     variables:
       VERSION: ${{ parameters.Version }}
     jobs:
