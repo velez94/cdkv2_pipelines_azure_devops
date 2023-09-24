@@ -74,7 +74,7 @@ jobs:
 - job: DeployEphemeralEnvironment
   dependsOn: BuildCDKApp
   condition: |
-    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest'), in(dependencies.BuildCDKApp.result, 'Succeeded')  )
+    and ( ${{ parameters.OnDemandTestEnv }}, eq(variables['Build.Reason'], 'PullRequest'), in(dependencies.BuildCDKApp.result, 'Succeeded'), eq(${{ parameters.Action }}, 'deploy')  )
   displayName: Deploy ephemeral resources
   steps:
     - template: ../common/install.yaml
