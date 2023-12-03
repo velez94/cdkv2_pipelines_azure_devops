@@ -81,7 +81,7 @@ stages:
           Project: ${{ parameters.Project }}
           AppPath: ${{ parameters.AppPath }}
           ListLambdas: ${{ parameters.Listlambdas  }}
-          Language: ${{ parameters.Language  }}  n
+          Language: ${{ parameters.Language  }}
           PrivateRepository: ${{ parameters.PrivateRepository }}
           AzureCustomFeed: ${{ parameters.AzureCustomFeed }}
           CDKPath: ${{ parameters.CDKPath }}
