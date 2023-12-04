@@ -122,5 +122,5 @@ stages:
           Language: ${{ parameters.Language }}
           PrivateRepository: ${{ parameters.PrivateRepository }}
           CDKPath: ${{ parameters.CDKPath }}
-          OnDemandTestEnv: ${{ parameters.OnDemandTestEnv }}
+          OnDemandTestEnv: false #${{ parameters.OnDemandTestEnv }}
           ECSDeployment: ${{ parameters.ECSDeployment }}

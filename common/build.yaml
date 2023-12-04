@@ -79,6 +79,7 @@ steps:
       CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
       CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
       ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
+      ENV: ${{ parameters.Environment }}
     #Compile app for serveless projects
   - ${{ each value in parameters.Listlambdas }}:
     - script: | 
@@ -97,6 +98,7 @@ steps:
       CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
       CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
       ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
+      ENV: ${{ parameters.Environment }}
 # typescript
 - ${{ if eq(parameters.Language, 'typescript') }}:
   - ${{ if eq(parameters.PrivateRepository, true) }}:
@@ -119,6 +121,7 @@ steps:
       CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
       CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
       ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
+      ENV: ${{ parameters.Environment }}
 
 - task: AWSShellScript@1
   inputs:
@@ -142,6 +145,7 @@ steps:
     CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
     CDK_DEPLOY_REGION: $(${{ parameters.Environment }}_region)
     ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
+    ENV: ${{ parameters.Environment }}
 
 - script: |
     
@@ -152,6 +156,7 @@ steps:
     CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
     CDK_DEPLOY_REGION: $(${{ parameters.Environment }}_region)
     ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
+    ENV: ${{ parameters.Environment }}
       
 - task: PublishTestResults@2
   inputs:
@@ -187,6 +192,7 @@ steps:
     CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
     CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
     ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
+    ENV: ${{ parameters.Environment }}
 # Publish Package
 - task: PublishPipelineArtifact@1
   displayName: PublishArtifact

@@ -64,6 +64,7 @@ steps:
       CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
       CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
       ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
+      ENV: ${{ parameters.Environment }}
 
 - task: AWSShellScript@1
   inputs:
@@ -93,3 +94,4 @@ steps:
     CDK_DEPLOY_ACCOUNT: $(${{ parameters.Environment }}_account)
     CDK_DEPLOY_REGION:  $(${{ parameters.Environment }}_region)
     ON_DEMAND_TEST_ENV: ${{ parameters.OnDemandTestEnv }}
+    ENV: ${{ parameters.Environment }}
